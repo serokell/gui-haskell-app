@@ -34,6 +34,8 @@ addEntry :: Gtk.IsContainer a => Text -> a -> IO Gtk.Entry
 addEntry labelStr container = do
   hbox <- Gtk.boxNew Gtk.OrientationHorizontal 5
   entry <- Gtk.entryNew
+  Gtk.setWidgetExpand entry True
+  Gtk.setEntryXalign entry 1
   label <- Gtk.labelNew (Just labelStr)
   Gtk.containerAdd hbox entry
   Gtk.containerAdd hbox label
