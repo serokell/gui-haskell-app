@@ -20,6 +20,8 @@ appActivate :: Gtk.Application -> IO ()
 appActivate app = do
   window <- Gtk.applicationWindowNew app
   Gtk.setWindowTitle window (Text.pack "GUI Haskell App")
+  Gtk.setWindowResizable window False
+  Gtk.setWindowDefaultWidth window 300
   vbox <- Gtk.boxNew Gtk.OrientationVertical 10
   Gtk.setWidgetMargin vbox 10
   Gtk.containerAdd window vbox
