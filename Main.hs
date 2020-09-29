@@ -20,8 +20,12 @@ appActivate :: Gtk.Application -> IO ()
 appActivate app = do
   window <- Gtk.applicationWindowNew app
   Gtk.setWindowTitle window (Text.pack "GUI Haskell App")
-  _entryC <- addEntry window
-  _entryF <- addEntry window
+  vbox <- Gtk.boxNew Gtk.OrientationVertical 10
+  Gtk.setWidgetMargin vbox 10
+  Gtk.containerAdd window vbox
+  Gtk.widgetShow vbox
+  _entryC <- addEntry vbox
+  _entryF <- addEntry vbox
   Gtk.widgetShow window
 
 addEntry :: Gtk.IsContainer a => a -> IO Gtk.Entry
