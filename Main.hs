@@ -17,4 +17,5 @@ appId = Text.pack "io.serokell.gui-haskell-app"
 appActivate :: Gtk.Application -> IO ()
 appActivate app = do
   window <- Gtk.applicationWindowNew app
+  Gtk.setWindowTitle window (Text.pack "GUI Haskell App")
   Gtk.widgetShow window
