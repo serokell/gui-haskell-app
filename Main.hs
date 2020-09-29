@@ -28,6 +28,11 @@ appActivate app = do
   Gtk.widgetShow vbox
   _entryC <- addEntry (Text.pack "°C") vbox
   _entryF <- addEntry (Text.pack "°F") vbox
+  button <- Gtk.buttonNew
+  Gtk.setButtonLabel button (Text.pack "Get Weather")
+  Gtk.setWidgetHalign button Gtk.AlignCenter
+  Gtk.containerAdd vbox button
+  Gtk.widgetShow button
   Gtk.widgetShow window
 
 addEntry :: Gtk.IsContainer a => Text -> a -> IO Gtk.Entry
