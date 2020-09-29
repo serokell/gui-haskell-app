@@ -18,4 +18,7 @@ appActivate :: Gtk.Application -> IO ()
 appActivate app = do
   window <- Gtk.applicationWindowNew app
   Gtk.setWindowTitle window (Text.pack "GUI Haskell App")
+  entry <- Gtk.entryNew
+  Gtk.containerAdd window entry
+  Gtk.widgetShow entry
   Gtk.widgetShow window
