@@ -1,3 +1,5 @@
+{-# LANGUAGE MonoLocalBinds #-}
+
 import Data.Text (Text)
 import qualified Data.Text as Text
 
@@ -18,7 +20,13 @@ appActivate :: Gtk.Application -> IO ()
 appActivate app = do
   window <- Gtk.applicationWindowNew app
   Gtk.setWindowTitle window (Text.pack "GUI Haskell App")
-  entry <- Gtk.entryNew
-  Gtk.containerAdd window entry
-  Gtk.widgetShow entry
+  _entryC <- addEntry window
+  _entryF <- addEntry window
   Gtk.widgetShow window
+
+addEntry :: Gtk.IsContainer a => a -> IO Gtk.Entry
+addEntry container = do
+  entry <- Gtk.entryNew
+  Gtk.containerAdd container entry
+  Gtk.widgetShow entry
+  return entry
