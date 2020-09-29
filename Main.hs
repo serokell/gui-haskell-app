@@ -1,7 +1,11 @@
-{-# LANGUAGE MonoLocalBinds #-}
+{-# LANGUAGE MonoLocalBinds, TypeApplications #-}
 
 import Data.Text (Text)
 import qualified Data.Text as Text
+import Data.Fixed (Centi)
+import Control.Concurrent (threadDelay)
+import System.Random (randomRIO)
+import Text.Read (readMaybe)
 
 import qualified GI.Gtk as Gtk
 import qualified GI.Gio as Gio
@@ -52,3 +56,18 @@ addEntry labelStr container = do
   Gtk.widgetShow label
   Gtk.widgetShow hbox
   return entry
+
+c_to_f, f_to_c :: Double -> Double
+c_to_f = (+32) . (*1.8)
+f_to_c = (/1.8) . subtract 32
+
+parseDouble :: Text -> Maybe Double
+parseDouble = readMaybe . Text.unpack
+
+renderDouble :: Double -> Text
+renderDouble = Text.pack . show @Centi . realToFrac
+
+getWeather :: IO Double
+getWeather = do
+  threadDelay (3 * 1000000)
+  randomRIO (-30, 30)
