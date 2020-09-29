@@ -26,13 +26,19 @@ appActivate app = do
   Gtk.setWidgetMargin vbox 10
   Gtk.containerAdd window vbox
   Gtk.widgetShow vbox
-  _entryC <- addEntry vbox
-  _entryF <- addEntry vbox
+  _entryC <- addEntry (Text.pack "°C") vbox
+  _entryF <- addEntry (Text.pack "°F") vbox
   Gtk.widgetShow window
 
-addEntry :: Gtk.IsContainer a => a -> IO Gtk.Entry
-addEntry container = do
+addEntry :: Gtk.IsContainer a => Text -> a -> IO Gtk.Entry
+addEntry labelStr container = do
+  hbox <- Gtk.boxNew Gtk.OrientationHorizontal 5
   entry <- Gtk.entryNew
-  Gtk.containerAdd container entry
+  label <- Gtk.labelNew (Just labelStr)
+  Gtk.containerAdd hbox entry
+  Gtk.containerAdd hbox label
+  Gtk.containerAdd container hbox
   Gtk.widgetShow entry
+  Gtk.widgetShow label
+  Gtk.widgetShow hbox
   return entry
