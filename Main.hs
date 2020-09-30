@@ -39,6 +39,9 @@ appActivate app = do
   Gtk.setButtonLabel button (Text.pack "Get Weather")
   Gtk.setWidgetHalign button Gtk.AlignCenter
   Gtk.containerAdd vbox button
+  _ <- Gtk.onButtonClicked button $
+    do c <- getWeather
+       Gtk.entrySetText entryC (renderDouble c)
   Gtk.widgetShow button
   Gtk.widgetShow window
 
