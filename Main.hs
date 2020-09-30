@@ -34,7 +34,11 @@ appActivate app = do
   entryF <- addEntry (Text.pack "°F") vbox
   _ <- Gtk.onEditableChanged entryC $
     do s <- Gtk.entryGetText entryC
-       Gtk.entrySetText entryF (Text.reverse s)
+       case parseDouble s of
+         Nothing -> return ()
+         Just v ->
+           let s' = renderDouble (c_to_f v)
+           in Gtk.entrySetText entryF s'
   button <- Gtk.buttonNew
   Gtk.setButtonLabel button (Text.pack "Get Weather")
   Gtk.setWidgetHalign button Gtk.AlignCenter
