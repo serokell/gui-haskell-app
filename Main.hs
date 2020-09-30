@@ -10,6 +10,7 @@ import Control.Monad (unless)
 
 import qualified GI.Gtk as Gtk
 import qualified GI.Gio as Gio
+import qualified GI.GLib as GLib
 
 main :: IO ()
 main = do
@@ -42,7 +43,10 @@ appActivate app = do
   _ <- Gtk.onButtonClicked button $
     do _ <- forkIO $ do
          c <- getWeather
-         Gtk.entrySetText entryC (renderDouble c)
+         _ <- GLib.idleAdd GLib.PRIORITY_HIGH_IDLE $ do
+           _ <- Gtk.entrySetText entryC (renderDouble c)
+           return False
+         return ()
        return ()
   Gtk.widgetShow button
   Gtk.widgetShow window
