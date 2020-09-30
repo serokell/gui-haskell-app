@@ -26,8 +26,11 @@ appActivate app = do
   Gtk.setWidgetMargin vbox 10
   Gtk.containerAdd window vbox
   Gtk.widgetShow vbox
-  _entryC <- addEntry (Text.pack "°C") vbox
-  _entryF <- addEntry (Text.pack "°F") vbox
+  entryC <- addEntry (Text.pack "°C") vbox
+  entryF <- addEntry (Text.pack "°F") vbox
+  _ <- Gtk.onEditableChanged entryC $
+    do s <- Gtk.entryGetText entryC
+       Gtk.entrySetText entryF (Text.reverse s)
   button <- Gtk.buttonNew
   Gtk.setButtonLabel button (Text.pack "Get Weather")
   Gtk.setWidgetHalign button Gtk.AlignCenter
