@@ -6,6 +6,7 @@ import Data.Fixed (Centi)
 import Control.Concurrent (threadDelay)
 import System.Random (randomRIO)
 import Text.Read (readMaybe)
+import Control.Monad (unless)
 
 import qualified GI.Gtk as Gtk
 import qualified GI.Gio as Gio
@@ -44,12 +45,14 @@ appActivate app = do
 setEntryRelation :: Gtk.Entry -> (Double -> Double) -> Gtk.Entry -> IO ()
 setEntryRelation entrySource conv entryTarget = do
   _ <- Gtk.onEditableChanged entrySource $
-    do s <- Gtk.entryGetText entrySource
-       case parseDouble s of
-         Nothing -> return ()
-         Just v ->
-           let s' = renderDouble (conv v)
-           in Gtk.entrySetText entryTarget s'
+    do target_focused <- Gtk.widgetHasFocus entryTarget
+       unless target_focused $ do
+         s <- Gtk.entryGetText entrySource
+         case parseDouble s of
+           Nothing -> return ()
+           Just v ->
+             let s' = renderDouble (conv v)
+             in Gtk.entrySetText entryTarget s'
   return ()
 
 addEntry :: Gtk.IsContainer a => Text -> a -> IO Gtk.Entry
