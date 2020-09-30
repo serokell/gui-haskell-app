@@ -3,7 +3,7 @@
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Fixed (Centi)
-import Control.Concurrent (threadDelay)
+import Control.Concurrent (threadDelay, forkIO)
 import System.Random (randomRIO)
 import Text.Read (readMaybe)
 import Control.Monad (unless)
@@ -40,8 +40,10 @@ appActivate app = do
   Gtk.setWidgetHalign button Gtk.AlignCenter
   Gtk.containerAdd vbox button
   _ <- Gtk.onButtonClicked button $
-    do c <- getWeather
-       Gtk.entrySetText entryC (renderDouble c)
+    do _ <- forkIO $ do
+         c <- getWeather
+         Gtk.entrySetText entryC (renderDouble c)
+       return ()
   Gtk.widgetShow button
   Gtk.widgetShow window
 
