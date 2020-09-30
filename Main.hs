@@ -41,10 +41,12 @@ appActivate app = do
   Gtk.setWidgetHalign button Gtk.AlignCenter
   Gtk.containerAdd vbox button
   _ <- Gtk.onButtonClicked button $
-    do _ <- forkIO $ do
+    do Gtk.widgetSetSensitive button False
+       _ <- forkIO $ do
          c <- getWeather
          _ <- GLib.idleAdd GLib.PRIORITY_HIGH_IDLE $ do
            _ <- Gtk.entrySetText entryC (renderDouble c)
+           Gtk.widgetSetSensitive button True
            return False
          return ()
        return ()
